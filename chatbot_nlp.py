@@ -194,7 +194,4 @@ def chatbot_response(user_input):
     # This directly finds a response for the input
     return chat.respond(user_input)
 
-user_input = "what is ni-kshay setu app"
-response = chatbot_response(user_input)
-print(response)
      
