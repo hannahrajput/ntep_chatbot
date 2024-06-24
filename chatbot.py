@@ -22,7 +22,7 @@ import streamlit as st
 
 from ntep_data_2 import find_node_ids
 # from ntep_data import get_node_and_subnode_ids
-from question_ans import faq
+# from question_ans import faq
 from chatbot_nlp import chatbot_response
 from managetb_nlp import managetb_response
 
