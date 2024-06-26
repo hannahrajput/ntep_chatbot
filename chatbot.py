@@ -208,9 +208,11 @@ def ntep(query):
    
 
     """
-   print('entering')
-   result = find_node_ids(query)
-   print('result', result)
+    # Whenever using the NTEP tool always provide the whole response you get from the tool do not shorten the links provide of the links you get in reponse from NTEP tool Do not iterate too much
+   # print('entering')
+   # result = find_node_ids(query)
+   # print('result', result)
+    result = "ntep"
    return result
 @tool
 def faq_chain(query):
@@ -226,11 +228,13 @@ def faq_chain(query):
 
 
 
-@tool
-def query_response(query):
-    """You are a helpful assistant who knows about the queries raised by thes user and provide information on those queries. when the user asks to raise a query you are responsible"""
-    print('query raised')
-    return query
+# @tool
+# def query_response(query):
+#     """You are a helpful assistant who knows about the queries raised by thes user and provide information on those queries. when the user asks to raise a query you are responsible"""
+#     print('query raised')
+#     #> Query Response: Useful when user wants to raise a query. Whenever the user asks questions like i want to raise a query or if the user asks about the list of their raised queries this tool will be useful.
+
+#     return query
 tools = [
     
 
@@ -256,11 +260,11 @@ tools = [
         description="Useful when health related queries are asked strictly used for manage tb app if the user query contains manage tb always go to this tool.this too is useful when user query contains words from this list [`presciption`,`medication`,`meds`,`regimen`,`manage tb`,`dosage`,`treatment`,`regimen app`,`prescription app`,`manage tb india`].Returns the response from the function.Generates medical prescriptions based on personal health data. Requires detailed health information.And always give query to the function in the format key: value and respond to the user what the tool function returns dont iterate too much"
     ),
    
-    Tool(
-        name="Query Response",
-        func=query_response.run,
-        description="Useful when user wants to raise a query. Whenever the user asks questions like i want to raise a query or if the user asks about the list of their raised queries this tool will be useful.",
-    )
+    # Tool(
+    #     name="Query Response",
+    #     func=query_response.run,
+    #     description="Useful when user wants to raise a query. Whenever the user asks questions like i want to raise a query or if the user asks about the list of their raised queries this tool will be useful.",
+    # )
 
 ]
 
@@ -272,9 +276,8 @@ prefix = """Answer the following questions as best you can, but speaking in a ki
             > NTEP: Strictly Tailored for inquiries specifically related to tuberculosis(tb) or NTEP functions,and other health-related terms only. This tool is essential for addressing detailed questions about tuberculosis treatments and diagnostics or NTEP functions, offering direct response from the function for further information where applicable.Dont anwers questions which are not related to ntep or tuberculosis , and other health-related terms always return the response from the tool
             > Assessment: Activates when terms like 'assessment', 'quiz', 'test', 'evaluate', 'exam', 'questions', 'trivia','knowledge','check','gauge','learn','information' are detected in the query,passing the query to the tool and providing the msessage from the tool.
             > Greetings: Strictly Used to initiate or respond to greetings and casual conversational exchanges. Whenever initiates conversation with hello or hi. Or when asks questions like who are you.Useful when user replies with thsnk you or welcome. This tool should be employed for friendly interactions, welcoming users, or acknowledging their presence in a warm and polite manner.
-            > Query Response: Useful when user wants to raise a query. Whenever the user asks questions like i want to raise a query or if the user asks about the list of their raised queries this tool will be useful.
-
-        Whenever using the NTEP tool always provide the whole response you get from the tool do not shorten the links provide of the links you get in reponse from NTEP tool Do not iterate too much
+            
+       
         When using Greetings tool do not process the user query on your own. pass the query to the tool as it is do not change it. Do not iterate too much
         When using the Greetings tool with reponding always ask the user do they want to know anything else.if they say yes ask the user what they want to know and if they say no then politely close the conversation, if the user says yes do ask them what they want to know please do not iterate too much, you are a smart chatbot you are intellegent enough to know when to ask the user what they want to know if the response from gerrting is something which yuo are introducing yourself with or asking he user how can you assist them then you should know not to add the question of what else do they want to know.
         Greetings tool is your priority tool whenever get a user query you first go to greetings tool see if the question can be answered from there or not. if yes you respond from greetings tool but if not then look for other tool that can answer the user query.
@@ -309,7 +312,10 @@ query = st.text_input("How may I help you?")
 if query:
     
     response = agent_chain.run(query)  # Assuming agent_chain handles tool selection internally
-   
+    if response == "ntep":
+        print('entering', response)
+        result = find_node_ids(query)
+        st.write(result)
 
     if isinstance(response, dict) and "link" in response:
         st.markdown(response["message"])
