@@ -486,9 +486,6 @@ pairs = [
     [r"yes|yeah|yup|yes i want to know more",
      ["sure what do you want to know about"]],
 
-    [r"^\s*(\w+)\s*$",  # This pattern will match a single word that might be the user's name
-     ["Hello {0}, nice to meet you! How can I assist you today?"]],
-
     [r"(.*)",
      ["I'm not sure I understand you fully. Could you please elaborate?",
       #   "Can you please provide more details? I'm here to help!",
