@@ -212,7 +212,7 @@ def ntep(query):
    # print('entering')
    # result = find_node_ids(query)
    # print('result', result)
-    result = "ntep"
+   result = "ntep"
    return result
 @tool
 def faq_chain(query):
