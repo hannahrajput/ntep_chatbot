@@ -311,18 +311,25 @@ query = st.text_input("How may I help you?")
 
 if query:
     
-    response = agent_chain.run(query)  # Assuming agent_chain handles tool selection internally
-    print(response)
-    if "ntep" in response or "NTEP" in response:
-        print('entering', response)
-        result = find_node_ids(query)
-        st.write(result)
-
-    if isinstance(response, dict) and "link" in response:
-        st.markdown(response["message"])
-        st.markdown(f"[Assessment Tool]({response['link']})", unsafe_allow_html=True)
+    greetings_response = greetings_tool(query)
+    print('greetings response', greetings_response)
+    if greetings_response == "I'm not sure I understand you fully. Could you please elaborate?":
+        print('greetings response', greetings_response)
+    #   
+        response = agent_chain.run(query)  # Assuming agent_chain handles tool selection internally
+   
+        if "ntep" in response or "NTEP" in response:
+            print('entering', response)
+            result = find_node_ids(query)
+            st.write(result)
+        if isinstance(response, dict) and "link" in response:
+            st.markdown(response["message"])
+            st.markdown(f"[Assessment Tool]({response['link']})", unsafe_allow_html=True)
+        else:
+            st.write(response)
     else:
-        st.write(response)
+        st.write(greetings_response)
+
 
 with st.expander('Chat History'):
     st.info(st.session_state.memory.buffer)
