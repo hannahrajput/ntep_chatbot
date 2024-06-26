@@ -302,7 +302,7 @@ prompt = ZeroShotAgent.create_prompt(tools, prefix=prefix, suffix=suffix, input_
 if "memory" not in st.session_state:
     st.session_state["memory"] = ConversationBufferMemory(input_key="query", memory_key="chat_history", return_messages=True)
 
-llm_chain=LLMChain(llm=ChatOpenAI(model="gpt-4",temperature=0, openai_api_key=os.getenv('OPENAI_API_KEY')), prompt=prompt)
+llm_chain=LLMChain(llm=ChatOpenAI(model="gpt-4-turbo",temperature=0, openai_api_key=os.getenv('OPENAI_API_KEY')), prompt=prompt)
 
 agent = ZeroShotAgent(llm_chain=llm_chain, tools=tools, verbose=True)
 agent_chain = AgentExecutor.from_agent_and_tools(agent=agent, tools=tools, verbose=True, memory=st.session_state.memory,handle_parsing_errors=True, max_iterations= 6)
