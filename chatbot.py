@@ -313,7 +313,7 @@ if query:
     
     response = agent_chain.run(query)  # Assuming agent_chain handles tool selection internally
     print(response)
-    if "NTEP" in response:
+    if "ntep" in response or "NTEP" in response:
         print('entering', response)
         result = find_node_ids(query)
         st.write(result)
