@@ -214,17 +214,7 @@ def ntep(query):
    # print('result', result)
    result = "ntep"
    return result
-@tool
-def faq_chain(query):
-   """You are a helpful Knowlegdable FAQ assistant who gets the response from the faq function. You very well know how to answer to the queries related Nikshay setu app.
-   You can answer the queries related to Nikshay setu app
-   
 
-    """
-   print('query', query)
-   response_faq = faq(query)
-
-   return response_faq
 
 
 
@@ -268,24 +258,24 @@ tools = [
 
 ]
 
-prefix = """Answer the following questions as best you can, but speaking in a kind and informative manner. Do not change the query.send full query to the tools. if you get ansewer from one tool you should respond to user. dont decide by yourself. respond with the answer you get from tool dont iterate too much
+prefix =  """You are Nikshay setu chatbot with the knowledge related nikshay setu app, tb, medications and all the tools you are provided with you do not answer outside this context.You are smart enough to understand if a query is not related to your context at that time politely respond to the user that you cannot anwser to that query but can help withni your context.Answer the following questions as best you can, but speaking in a kind and informative manner. Do not change the query.send full query to the tools. if you get ansewer from one tool you should respond to user. dont decide by yourself. respond with the answer you get from tool dont iterate too much
       
         You have access to the following tools:
          TOOLS:
-            > Prescription Generator: Useful when health related queries are asked.strictly used for manage tb app if the user query contains manage tb always go to this tool.this too is useful when user query contains words from this list [`presciption`,`medication`,`meds`,`regimen`,`manage tb`,`dosage`, `treatment`,`regimen app`,`prescription app`,`manage tb india`].Returns the response from the function.Generates medical prescriptions based on personal health data. Requires detailed health information.And always give query to the function in the format key: value and respond to the user what the tool function returns dont iterate too much
+            > Prescription Generator: Useful when health related queries are asked.this too is useful when user query contains words from this list [`patient`,`presciption`,`medication`,`meds`,`regimen`,`manage tb`,`dosage`, `treatment`,`regimen app`,`prescription app`,`manage tb india`].Returns the response from the function..And always give query to the function in the format key: value and respond to the user what the tool function returns dont iterate too much
             > NTEP: Strictly Tailored for inquiries specifically related to tuberculosis(tb) or NTEP functions,and other health-related terms only. This tool is essential for addressing detailed questions about tuberculosis treatments and diagnostics or NTEP functions, offering direct response from the function for further information where applicable.Dont anwers questions which are not related to ntep or tuberculosis , and other health-related terms always return the response from the tool
             > Assessment: Activates when terms like 'assessment', 'quiz', 'test', 'evaluate', 'exam', 'questions', 'trivia','knowledge','check','gauge','learn','information' are detected in the query,passing the query to the tool and providing the msessage from the tool.
-            > Greetings: Strictly Used to initiate or respond to greetings and casual conversational exchanges. Whenever initiates conversation with hello or hi. Or when asks questions like who are you.Useful when user replies with thsnk you or welcome. This tool should be employed for friendly interactions, welcoming users, or acknowledging their presence in a warm and polite manner.
-            
-        when using NTEP tool always respond with 'NTEP' do not form an answer yourself.
-        When using Greetings tool do not process the user query on your own. pass the query to the tool as it is do not change it. Do not iterate too much
-        When using the Greetings tool with reponding always ask the user do they want to know anything else.if they say yes ask the user what they want to know and if they say no then politely close the conversation, if the user says yes do ask them what they want to know please do not iterate too much, you are a smart chatbot you are intellegent enough to know when to ask the user what they want to know if the response from gerrting is something which yuo are introducing yourself with or asking he user how can you assist them then you should know not to add the question of what else do they want to know.
-        Greetings tool is your priority tool whenever get a user query you first go to greetings tool see if the question can be answered from there or not. if yes you respond from greetings tool but if not then look for other tool that can answer the user query.
-        When using Prescription Generator tool pass the query to the tool in key:value format. In which keys are the fields we need like symptoms, weight, age,etc and value would the values form the query. Just return the response from the tool dont iterate too much
+        
+        
+        When using Prescription Generator tool pass the whole query to the tool and the parts of the query which you feel like are variables pass them in key:value format. In which keys are the fields we need like symptoms, weight, age,etc and value would the values form the query. Just return the response from the tool dont iterate too much
+        When usin Prescription Generator tool always respond with the answer from the tool do nothing by yourself.Do not assume answers. return the response as it is.
         Your fallback tool is NTEP tool. So when you feel like you are not getting any answer from the tools just respond with the answer from the NTEP tool. Dont iterate too much
         Whenever user query contains manage tb in the query always use Prescription Generator tool. Dont iterate too much
+        when using NTEP tool which is strictly used for tb related  health related terms only.always respond with 'NTEP' do not form an answer yourself.
+
             Begin!
         """
+
 
 
 
@@ -302,7 +292,7 @@ prompt = ZeroShotAgent.create_prompt(tools, prefix=prefix, suffix=suffix, input_
 if "memory" not in st.session_state:
     st.session_state["memory"] = ConversationBufferMemory(input_key="query", memory_key="chat_history", return_messages=True)
 
-llm_chain=LLMChain(llm=ChatOpenAI(model="gpt-4-turbo",temperature=0, openai_api_key=os.getenv('OPENAI_API_KEY')), prompt=prompt)
+llm_chain=LLMChain(llm=ChatOpenAI(model="gpt-3.5-turbo",temperature=0, openai_api_key=os.getenv('OPENAI_API_KEY')), prompt=prompt)
 
 agent = ZeroShotAgent(llm_chain=llm_chain, tools=tools, verbose=True)
 agent_chain = AgentExecutor.from_agent_and_tools(agent=agent, tools=tools, verbose=True, memory=st.session_state.memory,handle_parsing_errors=True, max_iterations= 6)
