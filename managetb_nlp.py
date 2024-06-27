@@ -46,7 +46,7 @@ pairs = [
      ["Looks like you are interested in Manage TB feature of our app. Here is the link: https://example.com/prescription-tool"]],
     
     [r".*\b(age|symptoms|blood pressure|health condition|weight|gender|heart rate)\b.*",
-     ["SO do you need a prescription or something else?"]]
+     ["So do you need a prescription or something else?"]]
 ]
 
 def managetb_response(user_input):
